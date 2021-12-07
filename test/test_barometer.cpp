@@ -26,7 +26,7 @@ void test_barometer_pressure_range(void)
 void test_barometer_humidity_range(void)
 {
     float humidity = barometer.getHumidity();
-    bool condition = humidity > 0 && humidity <= 100;
+    bool condition = humidity > 0 && humidity < 100;
     TEST_ASSERT_TRUE(condition);
 }
 
@@ -42,7 +42,6 @@ void setup()
     barometer.connect();
 
     RUN_TEST(test_barometer_connected);
-    Serial.println();
     RUN_TEST(test_barometer_temperature_range);
     RUN_TEST(test_barometer_pressure_range);
     RUN_TEST(test_barometer_humidity_range);
