@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "virtualbarometer.h"
+#include "VirtualBarometer.h"
 #include "SparkFunBME280.h"
 
 VirtualBarometer::VirtualBarometer()
