@@ -14,4 +14,4 @@ jobs:
         python -m pip install --upgrade pip
         pip install platformio
     - name: Build the project
-      run: pio run -e nanoatmega328
+      run: pio run -e nanoatmega328 -v
