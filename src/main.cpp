@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "virtualbarometer.h"
+#include <VirtualBarometer.h>
 #include <Wire.h>
 
 void setup() {
@@ -7,7 +7,9 @@ void setup() {
 
     Wire.begin();
 
-    VirtualBarometer barometer = VirtualBarometer();
+    VirtualBarometer barometer;
+
+    barometer.connect();
 
     barometer.println(String("Pressure: ") + barometer.getPressure());
     barometer.println(String("Temperature: ") + barometer.getTemperature());
