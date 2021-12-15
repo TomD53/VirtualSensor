@@ -23,7 +23,7 @@ bool VirtualBarometer::connect()
         if (connectionAttempts < totalReconnectAttempts)
         {
             ++connectionAttempts;
-            delay(1000);
+            delay(50);
             println(String("Attempting reconnect (") + connectionAttempts + String("/") + totalReconnectAttempts + String(")"));
             connect();
         }
@@ -34,17 +34,26 @@ bool VirtualBarometer::connect()
 // Returns temperature in a range between -40 and 85°C
 float VirtualBarometer::getTemperature()
 {
+    if (testMode) {
+        return getFloatSimulated("temperature");
+    }
     return sensor.readTempC();
 };
 
 // Returns pressure in Pascals between a range of 30000 and 110000
 float VirtualBarometer::getPressure()
 {
+    if (testMode) {
+        return getFloatSimulated("pressure");
+    }
     return sensor.readFloatPressure();
 };
 
 // Returns relative humidity as a percentage between 0 and 100
 float VirtualBarometer::getHumidity()
 {
+    if (testMode) {
+        return getFloatSimulated("humidity");
+    }
     return sensor.readFloatHumidity();
 };
