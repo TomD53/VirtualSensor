@@ -7,13 +7,18 @@ class VirtualSensor {
 
         String manufacturer = "UNKNOWN";
         bool isConnected = false;
-        bool testMode;
-
-        void enableTestMode();
-        void disableTestMode();
+        
         void println(String s);
+        void allowTesting();
     protected:
-        String prefix = "@VS:";
         float getFloatSimulated(String columnName);
         String getSimulatedValue(String columnName);
+        bool testMode;
+    private:
+        String prefix = "@VS:";
+        String sep = ":";
+        String getResponse(String stringToSend);
+        
+        void enableTestMode();
+        void disableTestMode();
 };

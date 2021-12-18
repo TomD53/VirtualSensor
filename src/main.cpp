@@ -11,19 +11,14 @@ void setup() {
 
     Wire.begin();
 
+    Serial.println("Connecting to barometer");
+
     barometer.connect();
 
-    barometer.println(String("Pressure: ") + barometer.getPressure());
-    barometer.println(String("Temperature: ") + barometer.getTemperature());
-    barometer.println(String("Humidity: ") + barometer.getHumidity());
+    barometer.allowTesting();
 
-    barometer.enableTestMode();
-
-    barometer.println(String("Simulated temperature: ") + barometer.getTemperature());
-    barometer.println(String("Simulated pressure: ") + barometer.getPressure());
-    barometer.println(String("Simulated humidity: ") + barometer.getHumidity());
 }
 
 void loop() {
-    ;
+    barometer.println(String("Simulated temperature: ") + barometer.getTemperature());
 }

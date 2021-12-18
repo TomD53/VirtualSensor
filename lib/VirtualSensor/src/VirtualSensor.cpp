@@ -6,11 +6,21 @@ void VirtualSensor::println(String s) {
 };
 
 void VirtualSensor::enableTestMode() {
+    println("Enabling test mode");
     testMode = true;
 }
 
 void VirtualSensor::disableTestMode() {
+    println("Disabling test mode");
     testMode = false;
+}
+
+String VirtualSensor::getResponse(String stringToSend) {
+    Serial.println(stringToSend);
+    Serial.flush(); // wait for data to be sent
+
+    String response = Serial.readStringUntil('\n');
+    return response;
 }
 
 float VirtualSensor::getFloatSimulated(String columnName) {
@@ -19,12 +29,15 @@ float VirtualSensor::getFloatSimulated(String columnName) {
 }
 
 String VirtualSensor::getSimulatedValue(String columnName) {
-    Serial.println(prefix + name + String(":") + columnName);
-    Serial.flush(); // wait for data to be sent
-    while (!Serial.available()) { // wait for response
-        ;
-    }
-
-    String response = Serial.readStringUntil('\n');
+    String response = getResponse(prefix + "REQ" + sep + name + sep + columnName);
     return response;
+}
+
+void VirtualSensor::allowTesting() {
+    String response = getResponse(prefix + "ISTEST" + sep + name);
+    if (response == "true") {
+        enableTestMode();
+    } else {
+        disableTestMode();
+    }
 }
