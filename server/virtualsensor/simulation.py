@@ -138,7 +138,7 @@ class Simulation:
                     print(f"[{time_elapsed}] Goal met: {goal}")
                 else:
                     goal.missed = True
-                    print(f"[{time_elapsed}] Goal met late: {goal}")
+                    print(f"[{time_elapsed}] Goal missed: {goal}")
                 return goal.met
 
     def add_goal(self, goal: SimulationEventGoal) -> List[SimulationEventGoal]:
