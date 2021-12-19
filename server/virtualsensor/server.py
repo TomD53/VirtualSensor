@@ -6,13 +6,14 @@ from threading import Thread
 import colorama
 from colorama import Fore, Back, Style
 from enum import Enum
-from simulation import Simulation, SensorRequest
+from virtualsensor.simulation import Simulation, SensorRequest, SimulationEvent
 
 
 class CommandName(str, Enum):
     ISTEST = "ISTEST"
     SENSOR_REQUEST = "REQ"
     LOG = "LOG"
+    EVENT = "EVENT"
 
 
 def list_available_ports():
@@ -32,28 +33,37 @@ class VirtualSensorServer:
     debug: bool
     sensors_to_test: List[str]
     simulation: Simulation
+    serial_monitor: bool = True
+
+    _run_thread: bool = False
 
     def __init__(self, port: str, sensors_to_test: List[str], simulation: Simulation, baud_rate=115200,
-                 debug=False):
+                 debug=False, serial_monitor: bool = True):
         self.debug = debug  # turn debug mode on or off
         self.sensors_to_test = sensors_to_test
         self.simulation = simulation
+        self.serial_monitor = serial_monitor
         colorama.init(autoreset=True)
         colorama.ansi.clear_screen()
         self.serial = Serial(port, baud_rate)
+
+    def start(self):
         self.io_thread = Thread(target=self.receive_line)
+        self._run_thread = True
         self.io_thread.start()
 
-        self.simulation.start()
+    def stop(self):
+        self._run_thread = False
 
     def receive_line(self):
-        while True:
+        while self._run_thread:
             line = self.serial.readline().decode().strip("\n\r ")
             if line.startswith(self.prefix):
                 print(Fore.CYAN + line) if self.debug else ""
                 self.process_command(line.removeprefix(self.prefix))
             else:
-                print(line)
+                print(line) if self.serial_monitor else ""
+        self.serial.close()
 
     def send_line(self, line: str):
         log(line) if self.debug else ""  # log output of server to Arduino
@@ -75,8 +85,12 @@ class VirtualSensorServer:
         if command_name == CommandName.SENSOR_REQUEST:
             request = SensorRequest(*args)
             log(request) if self.debug else ""
-            value = self.simulation.get_value(request)
+            value = self.simulation._get_value(request)
             self.send_line(str(value))
+
+        if command_name == CommandName.EVENT:
+            event = SimulationEvent(args[0], self.simulation.get_time_elapsed())
+            self.simulation.process_event(event)
 
 
 if __name__ == "__main__":

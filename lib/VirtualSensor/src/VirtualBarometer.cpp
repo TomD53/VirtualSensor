@@ -35,7 +35,7 @@ bool VirtualBarometer::connect()
 float VirtualBarometer::getTemperature()
 {
     if (testMode) {
-        return getFloatSimulated("temperature");
+        return getFloatSimulated("air_temperature");
     }
     return sensor.readTempC();
 };
@@ -44,7 +44,7 @@ float VirtualBarometer::getTemperature()
 float VirtualBarometer::getPressure()
 {
     if (testMode) {
-        return getFloatSimulated("pressure");
+        return getFloatSimulated("air_pressure");
     }
     return sensor.readFloatPressure();
 };

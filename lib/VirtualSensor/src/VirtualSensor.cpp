@@ -41,3 +41,7 @@ void VirtualSensor::allowTesting() {
         disableTestMode();
     }
 }
+
+void VirtualSensor::broadcastEvent(String eventName) {
+    Serial.println(prefix + "EVENT" + sep + eventName);
+}
