@@ -15,6 +15,7 @@ class VirtualSensor {
         void allowTesting();
 
         static void broadcastEvent(String eventName);
+        static void setup();
     protected:
         float getFloatSimulated(String columnName);
         String getSimulatedValue(String columnName);
