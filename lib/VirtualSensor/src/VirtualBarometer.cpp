@@ -34,7 +34,7 @@ bool VirtualBarometer::connect()
 // Returns temperature in a range between -40 and 85°C
 float VirtualBarometer::getTemperature()
 {
-    if (testMode) {
+    if (isTesting()) {
         return getFloatSimulated("air_temperature");
     }
     return sensor.readTempC();
@@ -43,7 +43,7 @@ float VirtualBarometer::getTemperature()
 // Returns pressure in Pascals between a range of 30000 and 110000
 float VirtualBarometer::getPressure()
 {
-    if (testMode) {
+    if (isTesting()) {
         return getFloatSimulated("air_pressure");
     }
     return sensor.readFloatPressure();
@@ -52,7 +52,7 @@ float VirtualBarometer::getPressure()
 // Returns relative humidity as a percentage between 0 and 100
 float VirtualBarometer::getHumidity()
 {
-    if (testMode) {
+    if (isTesting()) {
         return getFloatSimulated("humidity");
     }
     return sensor.readFloatHumidity();

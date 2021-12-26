@@ -45,3 +45,13 @@ void VirtualSensor::allowTesting() {
 void VirtualSensor::broadcastEvent(String eventName) {
     Serial.println(prefix + "EVENT" + sep + eventName);
 }
+
+bool VirtualSensor::isTesting() {
+    #ifdef VIRTUALSENSOR
+    if (!Serial) {
+        while (!Serial) { ; }
+        VirtualSensor::setup();
+    }
+    #endif
+    return testMode;
+}

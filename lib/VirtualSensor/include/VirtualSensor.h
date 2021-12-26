@@ -16,14 +16,14 @@ class VirtualSensor {
 
         static void broadcastEvent(String eventName);
         static void setup();
+        bool isTesting();
     protected:
         float getFloatSimulated(String columnName);
         String getSimulatedValue(String columnName);
-        bool testMode;
         VirtualSensor() {} // protected constructor so VirtualSensor cannot be used on its own
     private:
         String getResponse(String stringToSend);
-        
+        bool testMode;
         void enableTestMode();
         void disableTestMode();
 };
